@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import Any, NotRequired, TypedDict, get_type_hints
 from datetime import date, timedelta
 import time
+import pickle
 
 from neo4j import Record
 
@@ -68,6 +69,8 @@ def main():
 
     print(f"Number of conversations: {len(conversations)}")
 
+    with open("conversations.pkl", "wb") as f:
+        pickle.dump(conversations, f)
 
 
 if __name__ == "__main__":
