@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Any, NotRequired, TypedDict, get_type_hints
 from datetime import date, timedelta
 import time
-import pickle
+import pandas as pd
 
 from neo4j import Record
 
@@ -58,6 +58,22 @@ def make_conversation(record: Record) -> list[Tweet]:
     return conversation
 
 
+def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
+    rows: list[dict[str, Any]] = []  # pyright: ignore[reportExplicitAny]
+    index: list[tuple[int, int]] = []
+
+    for group_idx, conv in enumerate(conversations):
+        for position, obj in enumerate(conv):
+            index.append((group_idx, position))  # MultiIndex keys
+            rows.append(
+                vars(obj)
+            )  # Or manually: {'name': obj.name, 'value': obj.value}
+
+    multi_index = pd.MultiIndex.from_tuples(index, names=["conversation", "tweet"])
+    df = pd.DataFrame(rows, index=multi_index)
+    return df
+
+
 def main():
     conversations: list[list[Tweet]] = []
     start_time = time.time()
@@ -69,8 +85,8 @@ def main():
 
     print(f"Number of conversations: {len(conversations)}")
 
-    with open("conversations.pkl", "wb") as f:
-        pickle.dump(conversations, f)
+    df = parse_to_df(conversations)
+    pd.to_pickle(df, "conversations.pkl")
 
 
 if __name__ == "__main__":

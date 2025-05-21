@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import date, timedelta
-import pickle
+import pandas as pd
 import time
 
 
@@ -16,7 +16,6 @@ class Tweet:
 
 
 start_time = time.time()
-with open("./conversations.pkl", "rb") as f:
-    conversations: list[list[Tweet]] = pickle.load(f)
-    print(f"Number of conversations: {len(conversations)}")
+df = pd.read_pickle("./conversations.pkl")
+print(f"Number of conversations: {df.index.get_level_values('conversation').nunique()}")
 print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
