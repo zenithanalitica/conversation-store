@@ -13,6 +13,7 @@ import db
 class Tweet:
     id: str
     sentiment_label: str
+    sentiment_score: float
     created_at: date
     negative: float
     neutral: float
@@ -23,6 +24,7 @@ class Tweet:
 class TweetData(TypedDict):
     id: str
     sentiment_label: str
+    sentiment_score: float
     created_at: date
     negative: float
     neutral: float
@@ -86,7 +88,7 @@ def main():
     print(f"Number of conversations: {len(conversations)}")
 
     df = parse_to_df(conversations)
-    pd.to_pickle(df, "conversations.pkl")
+    pd.to_pickle(df, "test.pkl")
 
 
 if __name__ == "__main__":
