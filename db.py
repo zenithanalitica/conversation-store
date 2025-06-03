@@ -19,7 +19,8 @@ WITH root_airline_tweet, collect(path) AS paths, parent, r
 WITH root_airline_tweet, parent, r,
      apoc.coll.toSet(apoc.coll.flatten([p IN paths | nodes(p)])) AS tree_nodes
 
-RETURN parent, tree_nodes, size(tree_nodes+1) AS num_nodes
+RETURN parent, tree_nodes
+limit 10
 """
 
 
