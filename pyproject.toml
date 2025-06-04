@@ -1,7 +1,7 @@
 [project]
-name = "eda"
+name = "conversation_store"
 version = "0.1.0"
-description = "Add your description here"
+description = "Fetch and cache conversations"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
