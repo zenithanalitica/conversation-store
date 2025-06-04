@@ -22,6 +22,17 @@ def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
     return df
 
 
+def load_conversations() -> None:
+    conversations: list[list[Tweet]] = []
+    records = db.get_conversations()
+
+    for record in records:
+        conversations.append(tweet.make_conversation(record))
+
+    df = parse_to_df(conversations)
+    pd.to_pickle(df, "test.pkl")
+
+
 def main():
     conversations: list[list[Tweet]] = []
     start_time = time.time()
