@@ -3,9 +3,9 @@ from datetime import timedelta
 import time
 import pandas as pd
 
-
 import db
-from tweet import Tweet, make_conversation
+from lib.tweet import Tweet
+import lib.tweet as tweet
 
 
 def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
@@ -15,9 +15,7 @@ def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
     for group_idx, conv in enumerate(conversations):
         for position, obj in enumerate(conv):
             index.append((group_idx, position))  # MultiIndex keys
-            rows.append(
-                vars(obj)
-            )  # Or manually: {'name': obj.name, 'value': obj.value}
+            rows.append(vars(obj))
 
     multi_index = pd.MultiIndex.from_tuples(index, names=["conversation", "tweet"])
     df = pd.DataFrame(rows, index=multi_index)
@@ -31,7 +29,7 @@ def main():
     print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
 
     for record in records:
-        conversations.append(make_conversation(record))
+        conversations.append(tweet.make_conversation(record))
 
     print(f"Number of conversations: {len(conversations)}")
 
