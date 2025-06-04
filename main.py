@@ -3,9 +3,9 @@ from datetime import timedelta
 import time
 import pandas as pd
 
-import db
-from lib.tweet import Tweet
-import lib.tweet as tweet
+from . import db
+from .tweet import Tweet
+from . import tweet as tweet
 
 
 def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
