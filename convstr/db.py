@@ -1,7 +1,7 @@
 import logging
 from typing import LiteralString
 import neo4j
-import credentials
+from convstr import credentials
 from neo4j import GraphDatabase
 
 query: LiteralString = """
@@ -20,8 +20,9 @@ WITH root_airline_tweet, collect(path) AS paths, parent, r
 WITH root_airline_tweet, parent, r,
      apoc.coll.toSet(apoc.coll.flatten([p IN paths | nodes(p)])) AS tree_nodes
 
+WHERE size(tree_nodes) > 1
+
 RETURN parent, tree_nodes
-limit 10
 """
 
 
