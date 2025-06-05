@@ -1,5 +1,5 @@
 {
-  description = "EDA for db";
+  description = "Conversation storage";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
