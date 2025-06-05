@@ -115,4 +115,5 @@ for index, conv in df.groupby('conversation'):
         categories['other'] += 1
 
 for category in categories:
-    print(f'{category}: {categories[category]}')
+    share = round(categories[category] / sum(categories[category] for category in categories) * 100, 1)
+    print(f'{category}: {categories[category]} ({share}%)')
