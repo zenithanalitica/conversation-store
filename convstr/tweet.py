@@ -8,6 +8,7 @@ from neo4j import Record
 @dataclass
 class Tweet:
     id: str
+    text: str
     sentiment_label: str
     sentiment_score: float
     created_at: date
@@ -19,6 +20,7 @@ class Tweet:
 
 class TweetData(TypedDict):
     id: str
+    text: str
     sentiment_label: str
     sentiment_score: float
     created_at: date
