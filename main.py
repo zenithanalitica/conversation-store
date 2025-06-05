@@ -40,7 +40,7 @@ def main():
     logger = create_logger()
     start_time = time.time()
 
-    records = db.get_conversations()
+    records = db.get_conversations(logger)
     print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
 
     for record in records:
