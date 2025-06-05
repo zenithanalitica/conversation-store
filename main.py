@@ -23,7 +23,7 @@ def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
     return df
 
 
-def load_conversations(logger) -> None:
+def load_conversations(logger: logging.Logger) -> None:
     conversations: list[list[Tweet]] = []
 
     records = db.get_conversations(logger)
@@ -31,7 +31,10 @@ def load_conversations(logger) -> None:
     for record in records:
         conversations.append(tweet.make_conversation(record))
 
+    logger.info("Parsing conversations to dataframe...")
     df = parse_to_df(conversations)
+
+    logger.info("Saving conversations to file...")
     pd.to_pickle(df, "conversations.pkl")
 
 

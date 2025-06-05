@@ -31,6 +31,7 @@ def get_conversations(logger: logging.Logger):
     ) as driver:
         driver.verify_connectivity()
         logger.info(f"Connected. Authorization: {driver.verify_authentication()}")
+        logger.info("Fetching conversations...")
         return run_query(driver, query, logger)
 
 
