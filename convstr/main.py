@@ -9,6 +9,11 @@ from .tweet import Tweet
 from . import tweet as tweet
 
 
+def main():
+    logger = create_logger()
+    load_conversations(logger)
+
+
 def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []  # pyright: ignore[reportExplicitAny]
     index: list[tuple[int, int]] = []
@@ -25,8 +30,10 @@ def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
 
 def load_conversations(logger: logging.Logger) -> None:
     conversations: list[list[Tweet]] = []
+    start_time = time.time()
 
     records = db.get_conversations(logger)
+    logger.debug(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
 
     for record in records:
         conversations.append(tweet.make_conversation(record))
@@ -36,25 +43,7 @@ def load_conversations(logger: logging.Logger) -> None:
 
     logger.info("Saving conversations to file...")
     pd.to_pickle(df, "conversations.pkl")
-
-
-def main():
-    conversations: list[list[Tweet]] = []
-    logger = create_logger()
-    start_time = time.time()
-
-    records = db.get_conversations(logger)
-    print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
-
-    for record in records:
-        conversations.append(tweet.make_conversation(record))
-
-    print(f"Number of conversations: {len(conversations)}")
-
-    start_time = time.time()
-    df = parse_to_df(conversations)
-    pd.to_pickle(df, "conversations.pkl")
-    print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
+    logger.debug(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
 
 
 def create_logger() -> logging.Logger:
