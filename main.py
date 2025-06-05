@@ -30,7 +30,7 @@ def load_conversations() -> None:
         conversations.append(tweet.make_conversation(record))
 
     df = parse_to_df(conversations)
-    pd.to_pickle(df, "test.pkl")
+    pd.to_pickle(df, "conversations.pkl")
 
 
 def main():
@@ -46,7 +46,7 @@ def main():
 
     start_time = time.time()
     df = parse_to_df(conversations)
-    pd.to_pickle(df, "test.pkl")
+    pd.to_pickle(df, "conversations.pkl")
     print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
 
 
