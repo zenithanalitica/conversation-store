@@ -1,8 +1,6 @@
 import pandas as pd
 
 df = pd.read_pickle(r'C:\Users\marcv\OneDrive - TU Eindhoven\Escritorio\Data Science\Year 1\Q4\DBL Data Challenge\conversation-store\conversations.pkl')
-df['category'] = ''
-a = 0
 
 category_keywords = {
     'flight delays and cancellations': [
@@ -41,11 +39,6 @@ for index, conv in df.groupby('conversation'):
             break
     else:
         categories['other'] += 1
-        df.loc[conv.index, 'category'] = 'other'
-
-    a+= 1
-    if a==100:
-        break
 
 
 #Printing results
