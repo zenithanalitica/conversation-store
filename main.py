@@ -1,3 +1,4 @@
+import logging
 from typing import Any
 from datetime import timedelta
 import time
@@ -22,9 +23,10 @@ def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
     return df
 
 
-def load_conversations() -> None:
+def load_conversations(logger) -> None:
     conversations: list[list[Tweet]] = []
-    records = db.get_conversations()
+
+    records = db.get_conversations(logger)
 
     for record in records:
         conversations.append(tweet.make_conversation(record))
@@ -35,7 +37,9 @@ def load_conversations() -> None:
 
 def main():
     conversations: list[list[Tweet]] = []
+    logger = create_logger()
     start_time = time.time()
+
     records = db.get_conversations()
     print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
 
@@ -48,6 +52,24 @@ def main():
     df = parse_to_df(conversations)
     pd.to_pickle(df, "conversations.pkl")
     print(f"Time taken: {str(timedelta(seconds=time.time() - start_time))}")
+
+
+def create_logger() -> logging.Logger:
+    logger: logging.Logger = logging.getLogger("logger")
+    logger.setLevel(logging.DEBUG)
+
+    # Create a console handler and set its level
+    handler = logging.StreamHandler()
+    handler.setLevel(logging.DEBUG)
+
+    # Create a formatter
+    formatter = logging.Formatter("[%(levelname)s] %(message)s")
+    handler.setFormatter(formatter)
+
+    # Add the handler to the logger
+    logger.addHandler(handler)
+
+    return logger
 
 
 if __name__ == "__main__":

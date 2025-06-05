@@ -1,3 +1,4 @@
+import logging
 from typing import LiteralString
 import neo4j
 import credentials
@@ -24,23 +25,25 @@ limit 10
 """
 
 
-def get_conversations():
+def get_conversations(logger: logging.Logger):
     with GraphDatabase.driver(
         credentials.uri, auth=(credentials.user, credentials.password)
     ) as driver:
         driver.verify_connectivity()
-        print(f"Auth: {driver.verify_authentication()}")
-        return run_query(driver, query)
+        logger.info(f"Connected. Authorization: {driver.verify_authentication()}")
+        return run_query(driver, query, logger)
 
 
-def run_query(driver: neo4j.Driver, query: LiteralString) -> list[neo4j.Record]:
+def run_query(
+    driver: neo4j.Driver, query: LiteralString, logger: logging.Logger
+) -> list[neo4j.Record]:
     records, summary, _ = driver.execute_query(
         query,
         database_="neo4j",
     )
 
     # Summary information
-    print(
+    logger.debug(
         f"The query returned {len(records)} records in {summary.result_available_after} ms."
     )
     return records
