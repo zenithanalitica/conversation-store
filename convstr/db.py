@@ -1,8 +1,16 @@
 import logging
-from typing import LiteralString
+import os
+from typing import LiteralString, cast
+
 import neo4j
-from convstr import credentials
+from dotenv import load_dotenv
 from neo4j import GraphDatabase
+
+_ = load_dotenv()
+
+URI = cast(str, os.getenv("NEO4J_URI"))
+USERNAME = cast(str, os.getenv("NEO4J_USERNAME"))
+PASSWORD = cast(str, os.getenv("NEO4J_PASSWORD"))
 
 query: LiteralString = """
 MATCH (a_node:Tweet:AirlineTweet)-[r:REPLIES_TO]->(parent:ParentTweet)
@@ -27,9 +35,7 @@ RETURN parent, tree_nodes
 
 
 def get_conversations(logger: logging.Logger) -> list[neo4j.Record]:
-    with GraphDatabase.driver(
-        credentials.uri, auth=(credentials.user, credentials.password)
-    ) as driver:
+    with GraphDatabase.driver(URI, auth=(USERNAME, PASSWORD)) as driver:
         driver.verify_connectivity()
         logger.info(f"Connected. Authorization: {driver.verify_authentication()}")
         logger.info("Fetching conversations...")
