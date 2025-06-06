@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_pickle(r'C:\Users\marcv\OneDrive - TU Eindhoven\Escritorio\Data Science\Year 1\Q4\DBL Data Challenge\conversation-store\conversations.pkl')
+df = pd.read_pickle("./conversations.pkl")
 
 category_keywords = {
     'flight delays and cancellations': [
