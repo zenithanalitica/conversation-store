@@ -1,5 +1,5 @@
 [project]
-name = "conversation_store"
+name = "convstr"
 version = "0.1.0"
 description = "Fetch and cache conversations"
 readme = "README.md"
