@@ -26,7 +26,7 @@ RETURN parent, tree_nodes
 """
 
 
-def get_conversations(logger: logging.Logger):
+def get_conversations(logger: logging.Logger) -> list[neo4j.Record]:
     with GraphDatabase.driver(
         credentials.uri, auth=(credentials.user, credentials.password)
     ) as driver:
