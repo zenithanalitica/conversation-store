@@ -21,16 +21,16 @@ CALL apoc.path.spanningTree(a_node, {
   uniqueness: 'NODE_GLOBAL'
 }) YIELD path
 
-WITH a_node AS root_airline_tweet, path, parent, r
-WITH root_airline_tweet, collect(path) AS paths, parent, r
+WITH a_node AS root_airline_tweet, path, parent
+WITH root_airline_tweet, collect(path) AS paths, parent
 
-// Flatten paths to get all nodes and relationships
-WITH root_airline_tweet, parent, r,
+// Flatten paths to get all nodes
+WITH root_airline_tweet, parent,
      apoc.coll.toSet(apoc.coll.flatten([p IN paths | nodes(p)])) AS tree_nodes
 
 WHERE size(tree_nodes) > 1
 
-RETURN parent, tree_nodes
+RETURN parent, tree_nodes, root_airline_tweet.airline_id as airline_id
 """
 
 

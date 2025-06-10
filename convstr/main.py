@@ -14,16 +14,16 @@ def main():
     load_conversations(logger)
 
 
-def parse_to_df(conversations: list[list[Tweet]]) -> pd.DataFrame:
+def parse_to_df(conversations: list[tuple[str, list[Tweet]]]) -> pd.DataFrame:
     rows: list[dict[str, Any]] = []  # pyright: ignore[reportExplicitAny]
-    index: list[tuple[int, int]] = []
+    index: list[tuple[str, int, int]] = []
 
-    for group_idx, conv in enumerate(conversations):
+    for group_idx, (airline_id, conv) in enumerate(conversations):
         for position, obj in enumerate(conv):
-            index.append((group_idx, position))  # MultiIndex keys
+            index.append((airline_id, group_idx, position))  # MultiIndex keys
             rows.append(vars(obj))
 
-    multi_index = pd.MultiIndex.from_tuples(index, names=["conversation", "tweet"])
+    multi_index = pd.MultiIndex.from_tuples(index, names=["airline", "conversation", "tweet"])
     df = pd.DataFrame(rows, index=multi_index)
     return df
 

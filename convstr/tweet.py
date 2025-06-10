@@ -44,6 +44,7 @@ def filter_to_tweet_fields(
 def make_conversation(record: Record) -> list[Tweet]:
     conversation: list[Tweet] = []
     data = record.data()
+    airline_id = data["airline_id"]
 
     parent_data: TweetData = filter_to_tweet_fields(data["parent"])  # pyright: ignore[reportAny, reportAssignmentType]
     parent = make_tweet(parent_data)
@@ -55,4 +56,4 @@ def make_conversation(record: Record) -> list[Tweet]:
         reply = make_tweet(reply_data)
         conversation.append(reply)
 
-    return conversation
+    return (airline_id, conversation)
