@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, NotRequired, TypedDict, get_type_hints
+from typing import Any, NotRequired, TypedDict, cast, get_type_hints
 from datetime import date
 
 from neo4j import Record
@@ -41,10 +41,10 @@ def filter_to_tweet_fields(
     return {k: data[k] for k in allowed_keys if k in data}
 
 
-def make_conversation(record: Record) -> list[Tweet]:
+def make_conversation(record: Record) -> tuple[str, list[Tweet]]:
     conversation: list[Tweet] = []
     data = record.data()
-    airline_id = data["airline_id"]
+    airline_id: str = cast(str, data["airline_id"])
 
     parent_data: TweetData = filter_to_tweet_fields(data["parent"])  # pyright: ignore[reportAny, reportAssignmentType]
     parent = make_tweet(parent_data)

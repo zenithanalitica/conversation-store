@@ -23,13 +23,15 @@ def parse_to_df(conversations: list[tuple[str, list[Tweet]]]) -> pd.DataFrame:
             index.append((airline_id, group_idx, position))  # MultiIndex keys
             rows.append(vars(obj))
 
-    multi_index = pd.MultiIndex.from_tuples(index, names=["airline", "conversation", "tweet"])
+    multi_index = pd.MultiIndex.from_tuples(
+        index, names=["airline", "conversation", "tweet"]
+    )
     df = pd.DataFrame(rows, index=multi_index)
     return df
 
 
 def load_conversations(logger: logging.Logger) -> None:
-    conversations: list[list[Tweet]] = []
+    conversations: list[tuple[str, list[Tweet]]] = []
     start_time = time.time()
 
     records = db.get_conversations(logger)
